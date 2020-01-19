@@ -1,0 +1,489 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>5 Day Forecast</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script type="text/javascript">
+        function getWeather() {
+            //Web Service URL Below
+            var url =
+                'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=3172750397c14182ab230050192411&q=' +
+                document.getElementById("txtZipCode").value + '&num_of_days=7&tp=3&format=json';
+            if (document.getElementById("txtZipCode").value == "") {
+                location.reload();
+            } else {
+                // Cross platform xmlhttprequest
+
+                //Alert out the URL to make sure matches what you inserted
+                //alert(url);
+
+                // Create xmlhttprequest object
+                var xmlhttp = null;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                    //make sure that Browser supports overrideMimeType
+                    if (typeof xmlhttp.overrideMimeType != 'undefined') {
+                        xmlhttp.overrideMimeType('text/xml');
+                    }
+                } else if (window.ActiveXObject) {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } else {
+                    alert('Perhaps your browser does not support xmlhttprequests?');
+                }
+
+                // Create an HTTP GET request
+                xmlhttp.open('GET', url, true);
+
+                // Set the callback function
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        var myObject = JSON.parse(xmlhttp.responseText);
+                        document.write("<meta name='viewport' content='width=device-width, initial-scale=1'>");
+                        document.write("<link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>");
+                        document.write(
+                            "<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway'>");
+                        document.write("<div style='background-color:rgb(60,60,60)'>");
+
+
+                        var dow = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                        var startDate = myObject.data.weather[0].date;
+                        var convertedStartDate = new Date(startDate);
+                        var month = convertedStartDate.getMonth() + 1
+                        var day = convertedStartDate.getDate() + 1
+                        var dayOfWk = convertedStartDate.getDay() + 1
+                        var year = convertedStartDate.getFullYear();
+                        var shortStartDate = dow[dayOfWk] + " " + month + "/" + day + "/" + year;
+
+                        document.write(
+                            "<style>#top{background-image: url('C:/Users/ldela/Desktop/Project Ideas/rain.gif');            background-position: center;background-size: cover;}td img{display: block;margin-left: auto;margin-right: auto;}img{width:150px;}</style>"
+                            );
+                        document.write(
+                            "<div id='top' style='text-align:center;color:white;font-family:Old English; border:solid 2px black'>"
+                            );
+                        document.write(
+                            "<div class='w3-jumbo w3-animate-top w3-center' style='color:White;font-family:Old English'><br><b>In The Loop</b></div>"
+                        );
+                        //Current Weather Conditions
+                        document.write("<H1>Current Forecast<br>");
+                        document.write("Today's Date: " + shortStartDate + "<br>");
+                        document.write("Location: " + myObject.data.request[0].query + "</H1><br><br>");
+                        document.write("<img src=" + myObject.data["current_condition"][0].weatherIconUrl[0].value +
+                            " style='height:150px;width:150px'><br><br>");
+                        document.write("Condition: " + myObject.data["current_condition"][0].weatherDesc[0].value +
+                            "<br>");
+                        document.write("Current Temperature: " + myObject.data["current_condition"][0]["temp_F"] +
+                            "&deg;F<br>");
+                        document.write("Feels Like Temperature: " + myObject.data["current_condition"][0]
+                            .FeelsLikeF +
+                            "&deg;F<br>");
+                        document.write("Wind Speed: " + myObject.data["current_condition"][0].windspeedMiles +
+                            " mph<br>");
+                        document.write("Humidity: " + myObject.data["current_condition"][0].humidity + "%<br><br>");
+                        document.write("</div>");
+
+                        document.write(
+                            "<Table style='width:100%; color:white' align=center border=\"2\">"
+                        );
+                        for (var i = 0; i < myObject.data.weather.length; i++) {
+                            //dow = Day of Week
+                            var dow = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+                                "Saturday"
+                            ];
+                            var startDate = myObject.data.weather[i].date;
+                            var convertedStartDate = new Date(startDate);
+                            var month = convertedStartDate.getMonth() + 1
+                            var day = convertedStartDate.getDate() + 1
+                            var dayOfWk = convertedStartDate.getDay() + 1
+                            var year = convertedStartDate.getFullYear();
+                            var shortStartDate = dow[dayOfWk] + " " + month + "/" + day + "/" + year;
+
+                            //Table Headers
+                            if (i == 0) {
+                                document.write("<TH>");
+                                document.write("<H2>Date</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>Midnight</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>3 am</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>6 am</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>9 am</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>Noon</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>3 pm</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>6 pm</H2>")
+                                document.write("</TH>");
+
+                                document.write("<TH>");
+                                document.write("<H2>9 pm</H2>")
+                                document.write("</TH>");
+                            }
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            //Date & Weather Image
+                            document.write("<TR>");
+                            if (shortStartDate == "undefined 12/15/2019") {
+                                shortStartDate = "Sunday 12/15/2019";
+                                document.write("<TD>");
+                                document.write(shortStartDate);
+                                document.write("</TD>");
+                            } else {
+                                document.write("<TD>");
+                                document.write(shortStartDate);
+                                document.write("</TD>");
+                            }
+
+
+                            //Midnight
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[0].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //3am
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[1].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //6am   
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[2].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //9am
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[3].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //Noon
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[4].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //3pm
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[5].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //6pm
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[6].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+                            //9pm
+                            document.write("<TD>");
+                            document.write("<img src=" + myObject.data.weather[i].hourly[7].weatherIconUrl[0]
+                                .value +
+                                " style='height:150px;width:150px'>");
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            document.write("<TR>");
+
+                            document.write("<TD>");
+                            document.write("Forcast");
+                            document.write("</TD>");
+
+                            //Weather Description
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[0].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[1].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[2].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[3].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[4].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[5].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[6].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[7].weatherDesc[0].value);
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            //Predicted Temperatures 
+                            document.write("<TR>");
+
+                            document.write("<TD>");
+                            document.write("Temperature");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[0].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[1].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[2].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[3].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[4].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[5].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[6].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[7].tempF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            //Predicted Feel Like Temperatures
+                            document.write("<TR>");
+
+                            document.write("<TD>");
+                            document.write("Feels Like");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[0].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[1].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[2].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[3].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[4].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[5].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[6].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[7].FeelsLikeF + "&deg;F");
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            //Predicted Wind Speeds
+                            document.write("<TR>");
+
+                            document.write("<TD>");
+                            document.write("Wind Speed");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[0].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[1].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[2].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[3].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[4].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[5].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[6].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[7].windspeedMiles + " mph");
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+
+                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                            //Predicted Wind Speeds
+                            document.write("<TR>");
+
+                            document.write("<TD>");
+                            document.write("Humidity");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[0].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[1].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[2].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[3].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[4].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[5].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[6].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("<TD>");
+                            document.write(myObject.data.weather[i].hourly[7].humidity + "%");
+                            document.write("</TD>");
+
+                            document.write("</TR>");
+                        }
+                        document.write("</Table>");
+
+                        document.write(
+                            "<input class='w3-button w3-black w3-margin' id='btnCharacter' type='button' value='Return' onclick='location.reload();' />"
+                        );
+                        document.write("</div>");
+                        debugger;
+                    } else {
+                        // waiting for the call to complete
+                    }
+                };
+
+                // Make the actual request
+                xmlhttp.send(null);
+            }
+        }
+    </script>
+</head>
+
+<body style="background-color:lightgrey">
+
+    <style>
+        body,
+        h1 {
+            font-family: "Raleway", sans-serif
+        }
+
+        body,
+        html {
+            height: 100%
+        }
+
+        .bgimg {
+            background-image: url('C:/Users/ldela/Desktop/Project Ideas/weather2.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+        }
+    </style>
+
+    <body>
+
+        <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+            <div class="w3-display-topleft w3-padding-large w3-xlarge">
+                <img style="height:100px;width:100px" src="C:\Users\ldela\Desktop\Project Ideas\logo.png">
+            </div>
+            <div class="w3-display-middle">
+                <h1 class="w3-jumbo w3-animate-top w3-center">In The Loop</h1>
+                <hr class="w3-border-grey" style="margin:auto;width:40%">
+                <input type="text" id="txtZipCode" placeholder='"90210" or Beverly Hills, CA' style="width:500px;"><br>
+                <p class="w3-large w3-center">Forecast Search</p>
+                <button style="float:left"><a style="text-decoration: none;"
+                        href='C:/Users/ldela/Desktop/Project Ideas/News.html'>Get News</a></button>
+                <input style="float:right" id="btnWeather" type="button" value="Weather Forecast"
+                    onclick="getWeather();" />
+            </div>
+            <div class="w3-display-bottomleft w3-padding-large">
+                Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+            </div>
+        </div>
+
+    </body>
+
+</html>
