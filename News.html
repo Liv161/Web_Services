@@ -1,0 +1,156 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Current Events</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <script type="text/javascript">
+        function getNews() {
+            //Web Service URL Below
+            var url =
+                'https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/NewsSearchAPI?autoCorrect=false&pageNumber=1&pageSize=15&q=' +
+                document.getElementById("txtSearch").value +
+                '&safeSearch=true&rapidapi-key=3a3a375832msh2ca2defead9bcbap19bf9djsn8faef8cff93a';
+            if (document.getElementById("txtSearch").value == "") {
+                location.reload();
+            }else {
+
+
+                // Cross platform xmlhttprequest
+
+                //Alert out the URL to make sure matches what you inserted
+                //alert(url);
+
+                // Create xmlhttprequest object
+                var xmlhttp = null;
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                    //make sure that Browser supports overrideMimeType
+                    if (typeof xmlhttp.overrideMimeType != 'undefined') {
+                        xmlhttp.overrideMimeType('text/xml');
+                    }
+                } else if (window.ActiveXObject) {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } else {
+                    alert('Perhaps your browser does not support xmlhttprequests?');
+                }
+
+                // Create an HTTP GET request
+                xmlhttp.open('GET', url, true);
+
+                // Set the callback function
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        var myObject = JSON.parse(xmlhttp.responseText);
+                        document.write("<div style='background-color:rgb(60,60,60)'>");
+                        document.write(
+                            "<div class='w3-display-topleft w3-padding-large w3-xlarge'><img style='height:100px;width:100px' src='C:/Users/ldela/Desktop/Project Ideas/logo.png'></div>"
+                            );
+                        document.write(
+                            "<div class='w3-jumbo w3-animate-top w3-center' style='color:White;font-family:Old English'><br><b>In The Loop</b></div>"
+                            );
+                        for (var i = 0; i < myObject.value.length; i++) {
+                            document.write("<meta name='viewport' content='width=device-width, initial-scale=1'>");
+                            document.write(
+                                "<link rel='stylesheet' href='https://www.w3schools.com/w3css/4/w3.css'>");
+                            document.write(
+                                "<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Raleway'>"
+                                );
+                            document.write("<style>a:hover{color:red;}</style>");
+
+                            document.write("<div class='w3-content w3-card w3-light-grey'>");
+                            document.write("<div class='w3-row w3-margin' style='color:rgb(60,60,60)'>");
+
+                            document.write("<div class='w3-container'>");
+                            document.write("<div style='text-align:center'>");
+                            document.write("<h2 style='text-decoration:underline'>" + myObject.value[i].title +
+                                "</h2>");
+                            document.write("<img src=" + myObject.value[i].image.thumbnail + "><br>");
+                            document.write("</div>");
+                            document.write("<div style='text-align:justify'>");
+                            document.write("<p>" + myObject.value[i].description + "</p>");
+                            document.write("<p>" + myObject.value[i].body + "</p>");
+                            document.write("<b>Click Here --> <a target='blank' href=" + myObject.value[i].url +
+                                ">Link</a> For Full Story</b>");
+                            document.write("</div>");
+                            document.write("</div>");
+                            document.write("</div>");
+                            document.write("</div>");
+
+                        }
+
+                        document.write(
+                            "<input class='w3-button w3-black w3-margin' id='btnReload' type='button' value='Return' onclick='location.reload();' /><br>"
+                            );
+                            
+                        debugger;
+                                                                             
+
+                    } else {
+                        // waiting for the call to complete
+                    }
+                };
+
+                // Make the actual request
+                xmlhttp.send(null);
+            }
+
+
+            function test(){
+                document.write("<a href='http://www.google.com'></a>");
+            }
+
+            function getWeather() {
+                document.write("<a href='C:/Users/ldela/Desktop/Project Ideas/weather2.html'>Weather</a>");
+            }
+        }
+        
+    </script>
+</head>
+
+<style>
+    body,
+    h1 {
+        font-family: "Raleway", sans-serif
+    }
+
+    body,
+    html {
+        height: 100%
+    }
+
+    .bgimg {
+        background-image: url('C:/Users/ldela/Desktop/Project Ideas/collection-newspapers3.jpg');
+        min-height: 100%;
+        background-position: center;
+        background-size: cover;
+    }
+</style>
+
+<body>
+
+    <div class="bgimg w3-display-container w3-animate-opacity w3-text-white">
+        <div class="w3-display-topleft w3-padding-large w3-xlarge">
+            <img style="height:100px;width:100px" src="C:\Users\ldela\Desktop\Project Ideas\logo.png">
+        </div>
+        <div class="w3-display-middle">
+            <h1 class="w3-jumbo w3-animate-top w3-center">In The Loop</h1>
+            <hr class="w3-border-grey" style="margin:auto;width:40%">
+            <input type="text" id="txtSearch" style="width:500px;"><br>
+            <p class="w3-large w3-center">News Search</p>
+            <input style="float:left" id="btnNews" type="button" value="Get News" onclick="getNews();" />
+            <button style="float:right"><a style="text-decoration: none;"
+                    href='C:/Users/ldela/Desktop/Project Ideas/Weather.html'>Weather Forecast</a></button>
+        </div>
+        <div class="w3-display-bottomleft w3-padding-large">
+            Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
