@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title></title>
+ 
+<script type="text/javascript">
+
+var url = 'http://www.geoplugin.net/json.gp?ip=64.17.241.5';
+// Cross platform xmlhttprequest
+
+// Create xmlhttprequest object
+var xmlhttp = null;
+if (window.XMLHttpRequest) { 
+        xmlhttp = new XMLHttpRequest();
+        //make sure that Browser supports overrideMimeType
+        if ( typeof xmlhttp.overrideMimeType != 'undefined') { xmlhttp.overrideMimeType('text/xml'); }
+} else if (window.ActiveXObject) {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}  else {
+        alert('Perhaps your browser does not support xmlhttprequests?');
+}
+
+// Create an HTTP GET request
+xmlhttp.open('GET', url, true);
+
+// Set the callback function
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		var myObject = JSON.parse(xmlhttp.responseText);
+		document.write("<Table border=\"1\">");
+		document.write("<TR>");
+		document.write("<TD>");
+		document.write("IP Address: " + myObject.geoplugin_request);
+		document.write("</TR>");
+		document.write("</TD>");
+		document.write("<TR>");
+		document.write("<TD>");
+		document.write("City: " + myObject.geoplugin_city);
+		document.write("</TR>");
+		document.write("</TD>");
+		document.write("<TR>");
+		document.write("<TD>");
+		document.write("Latitude: " + myObject.geoplugin_latitude);
+		document.write("</TR>");
+		document.write("</TD>");
+		document.write("<TR>");
+		document.write("<TD>");
+		document.write("Longitude: " + myObject.geoplugin_longitude);
+		document.write("</TR>");
+		document.write("</TD>");
+		document.write("</Table>");
+		debugger;
+    } else {
+        // waiting for the call to complete
+    }
+};
+
+// Make the actual request
+xmlhttp.send(null);
+
+</script>
+</head>
+<body>
+
+
+</BODY>
+</html>

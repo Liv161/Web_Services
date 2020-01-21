@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<title>Ski Resort Lab</title>
+ 
+<script type="text/javascript">
+
+var url = 'http://api.weatherunlocked.com/api/resortforecast/54886853?num_of_days=3&app_id=aa80a7c3&app_key=8d5216b16f5d6c35da9690785922f2eb';
+// Cross platform xmlhttprequest
+
+// Create xmlhttprequest object
+var xmlhttp = null;
+if (window.XMLHttpRequest) { 
+        xmlhttp = new XMLHttpRequest();
+        //make sure that Browser supports overrideMimeType
+        if ( typeof xmlhttp.overrideMimeType != 'undefined') { xmlhttp.overrideMimeType('text/xml'); }
+} else if (window.ActiveXObject) {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}  else {
+        alert('Perhaps your browser does not support xmlhttprequests?');
+}
+
+// Create an HTTP GET request
+xmlhttp.open('GET', url, true);
+
+// Set the callback function
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+		var myObject = JSON.parse(xmlhttp.responseText);
+    document.write("<H1 align=center >"+myObject.name+"</H1>");    
+    document.write("<Table align=center border=\"1\">");
+    for(var i = 0; i < 19; i++){
+
+      if(i == 0){
+        document.write("<TH>");
+        document.write("Date");
+        document.write("</TH>");
+
+        document.write("<TH>");
+        document.write("Time");
+        document.write("</TH>");
+
+        document.write("<TH>");
+        document.write("Feels Like F");
+        document.write("</TH>");
+
+        document.write("<TH>");
+        document.write("Temp F");
+        document.write("</TH>");
+      }
+
+		document.write("<TR>");
+
+		document.write("<TD>");
+		document.write(myObject.forecast[i].date);
+		document.write("</TD>");
+
+		
+		document.write("<TD>");
+		document.write(myObject.forecast[i].time);
+		document.write("</TD>");
+    
+		document.write("<TD>");
+		document.write(myObject.forecast[i].base.feelslike_f);
+		document.write("</TD>");
+    
+		document.write("<TD>");
+		document.write(myObject.forecast[i].base.temp_f);
+		document.write("</TD>");
+
+    
+		document.write("</TR>");
+
+    }
+		document.write("</Table>");
+    
+		debugger;
+    } else {
+        // waiting for the call to complete
+    }
+};
+
+// Make the actual request
+xmlhttp.send(null);
+
+</script>
+</head>
+<body>
+
+
+</BODY>
+</html>
